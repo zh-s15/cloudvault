@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CloudVault | Secure File Storage</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f3f6fb;
+      color: #18243b;
+    }
+
+    header {
+      background: #13294b;
+      color: white;
+      padding: 22px 8%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    header h2 { margin: 0; }
+    header span { color: #7de0c3; }
+
+    main {
+      max-width: 900px;
+      margin: 42px auto;
+      padding: 0 20px;
+    }
+
+    .intro { text-align: center; margin-bottom: 30px; }
+    .intro h1 { font-size: 36px; margin-bottom: 12px; }
+    .intro p { color: #66748b; line-height: 1.7; }
+
+    .panel {
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px #172c4810;
+      border: 1px solid #e0e7f0;
+    }
+
+    .dropzone {
+      border: 2px dashed #9aabc3;
+      border-radius: 12px;
+      padding: 30px 18px;
+      text-align: center;
+      background: #f9fbff;
+    }
+
+    input[type="file"] {
+      display: block;
+      max-width: 100%;
+      margin: 18px auto;
+    }
+
+    button {
+      background: #167d70;
+      color: white;
+      border: 0;
+      border-radius: 8px;
+      padding: 13px 20px;
+      font-size: 15px;
+      cursor: pointer;
+      margin: 5px;
+    }
+
+    button:hover { background: #10675d; }
+    button:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    #downloadBtn { background: #234d86; }
+    #downloadBtn:hover { background: #193b69; }
+
+    #status {
+      margin-top: 20px;
+      padding: 16px;
+      background: #f0f5fa;
+      border-radius: 8px;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      line-height: 1.6;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .step {
+      padding: 18px 10px;
+      background: #e9f4f2;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .step strong {
+      display: block;
+      margin-bottom: 7px;
+      color: #126e62;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      color: #77849a;
+      font-size: 13px;
+    }
+
+    @media (max-width: 600px) {
+      .intro h1 { font-size: 28px; }
+      .panel { padding: 18px; }
+      .steps { grid-template-columns: repeat(2, 1fr); }
+      header { padding: 18px 5%; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h2>Cloud<span>Vault</span></h2>
+    <div>Secure File Storage</div>
+  </header>
+
+  <main>
+    <section class="intro">
+      <h1>Your Files, Protected.</h1>
+      <p>
+        Split files into blocks, encrypt them, and restore the original
+        file when you download it.
+      </p>
+    </section>
+
+    <section class="panel">
+      <div class="dropzone">
+        <h3>Select a file to secure</h3>
+        <p>For this demonstration, files are limited to 20 MB.</p>
+
+        <input type="file" id="fileInput" />
+
+        <button id="uploadBtn">Split & Encrypt File</button>
+        <button id="downloadBtn" disabled>Download & Restore</button>
+      </div>
+
+      <div id="status" role="status" aria-live="polite">
+        Select a file to begin.
+      </div>
+
+      <div class="steps">
+        <div class="step"><strong>01</strong>Select File</div>
+        <div class="step"><strong>02</strong>Split into Blocks</div>
+        <div class="step"><strong>03</strong>Encrypt Blocks</div>
+        <div class="step"><strong>04</strong>Restore File</div>
+      </div>
+    </section>
+  </main>
+
+  <footer>CloudVault — Cloud Computing Mini Project</footer>
+
+  <script>
+    const fileInput = document.getElementById("fileInput");
+    const uploadBtn = document.getElementById("uploadBtn");
+    const downloadBtn = document.getElementById("downloadBtn");
+    const statusBox = document.getElementById("status");
+
+    let currentFileId = null;
+
+    uploadBtn.addEventListener("click", async () => {
+      const file = fileInput.files[0];
+
+      if (!file) {
+        statusBox.textContent = "Please select a file first.";
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      uploadBtn.disabled = true;
+      downloadBtn.disabled = true;
+      currentFileId = null;
+      statusBox.textContent = "Uploading, splitting, and encrypting your file...";
+
+      try {
+        const response = await fetch("/api/upload", {
+          method: "POST",
+          body: formData
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(result.error || "Processing failed.");
+        }
+
+        currentFileId = result.fileId;
+        statusBox.textContent =
+          "SUCCESS: File split and encrypted!\n\n" +
+          "File: " + result.fileName + "\n" +
+          "Original size: " + result.originalSize + " bytes\n" +
+          "Block size: " + result.blockSize + " bytes\n" +
+          "Total blocks: " + result.totalBlocks + "\n\n" +
+          "The encrypted blocks are currently held in server memory.";
+        downloadBtn.disabled = false;
+      } catch (error) {
+        statusBox.textContent = "Error: " + error.message;
+      } finally {
+        uploadBtn.disabled = false;
+      }
+    });
+
+    downloadBtn.addEventListener("click", async () => {
+      if (!currentFileId) return;
+
+      downloadBtn.disabled = true;
+      statusBox.textContent = "Decrypting and restoring your file...";
+
+      try {
+        const response = await fetch(
+          "/api/download/" + encodeURIComponent(currentFileId)
+        );
+
+        if (!response.ok) {
+          const result = await response.json();
+          throw new Error(result.error || "Download failed.");
+        }
+
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+
+        link.href = url;
+        link.download = fileInput.files[0]?.name || "restored-file";
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(url);
+
+        statusBox.textContent =
+          "SUCCESS: Your file was decrypted and restored for download.";
+      } catch (error) {
+        statusBox.textContent = "Error: " + error.message;
+      } finally {
+        downloadBtn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
