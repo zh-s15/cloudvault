@@ -15,20 +15,61 @@ const PORT = process.env.PORT || 3000;
 const BLOCK_SIZE = 64 * 1024;
 const MAX_FILE_SIZE = 20 * 1024 * 1024;
 
-const { AWS_REGION, S3_BUCKET, ENCRYPTION_MASTER_KEY } = process.env;
+// CORS configuration: allow the deployed CloudVault frontend
+const allowedOrigins = [
+  "https://cloudvault-ws.onrender.com"
+];
+
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+
+  if (origin && allowedOrigins.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+    res.setHeader("Vary", "Origin");
+    res.setHeader(
+      "Access-Control-Allow-Methods",
+      "GET, POST, OPTIONS"
+    );
+    res.setHeader(
+      "Access-Control-Allow-Headers",
+      "Content-Type"
+    );
+    res.setHeader(
+      "Access-Control-Expose-Headers",
+      "Content-Disposition"
+    );
+  }
+
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(204);
+  }
+
+  next();
+});
+
+const {
+  AWS_REGION,
+  S3_BUCKET,
+  ENCRYPTION_MASTER_KEY
+} = process.env;
 
 if (!AWS_REGION || !S3_BUCKET || !ENCRYPTION_MASTER_KEY) {
-  throw new Error("Missing AWS_REGION, S3_BUCKET, or ENCRYPTION_MASTER_KEY in .env");
+  throw new Error(
+    "Missing AWS_REGION, S3_BUCKET, or ENCRYPTION_MASTER_KEY in .env"
+  );
 }
 
 if (!/^[0-9a-fA-F]{64}$/.test(ENCRYPTION_MASTER_KEY)) {
-  throw new Error("ENCRYPTION_MASTER_KEY must be exactly 64 hexadecimal characters.");
+  throw new Error(
+    "ENCRYPTION_MASTER_KEY must be exactly 64 hexadecimal characters."
+  );
 }
 
 const masterKey = Buffer.from(ENCRYPTION_MASTER_KEY, "hex");
 
 const s3 = new S3Client({ region: AWS_REGION });
 
+// Serve frontend files if present
 app.use(express.static(path.join(__dirname, "public")));
 
 const upload = multer({
@@ -58,28 +99,38 @@ async function readS3Object(key) {
   return Buffer.from(await result.Body.transformToByteArray());
 }
 
+// Upload, split, encrypt, and store file blocks in S3
 app.post("/api/upload", upload.single("file"), async (req, res) => {
   try {
     if (!req.file) {
-      return res.status(400).json({ error: "Please select a file." });
+      return res.status(400).json({
+        error: "Please select a file."
+      });
     }
 
     const fileId = crypto.randomUUID();
     const fileKey = deriveFileKey(fileId);
     const blocks = [];
-    const totalBlocks = Math.ceil(req.file.buffer.length / BLOCK_SIZE);
+    const totalBlocks = Math.ceil(
+      req.file.buffer.length / BLOCK_SIZE
+    );
 
-    for (let offset = 0, index = 0;
+    for (
+      let offset = 0, index = 0;
       offset < req.file.buffer.length;
-      offset += BLOCK_SIZE, index++) {
-
+      offset += BLOCK_SIZE, index++
+    ) {
       const plainBlock = req.file.buffer.subarray(
         offset,
         Math.min(offset + BLOCK_SIZE, req.file.buffer.length)
       );
 
       const iv = crypto.randomBytes(12);
-      const cipher = crypto.createCipheriv("aes-256-gcm", fileKey, iv);
+      const cipher = crypto.createCipheriv(
+        "aes-256-gcm",
+        fileKey,
+        iv
+      );
 
       const encrypted = Buffer.concat([
         cipher.update(plainBlock),
@@ -87,15 +138,18 @@ app.post("/api/upload", upload.single("file"), async (req, res) => {
       ]);
 
       const authTag = cipher.getAuthTag();
-      const objectKey = `files/${fileId}/block-${String(index).padStart(6, "0")}.bin`;
+      const objectKey =
+        `files/${fileId}/block-${String(index).padStart(6, "0")}.bin`;
 
-      await s3.send(new PutObjectCommand({
-        Bucket: S3_BUCKET,
-        Key: objectKey,
-        Body: encrypted,
-        ContentType: "application/octet-stream",
-        ServerSideEncryption: "AES256"
-      }));
+      await s3.send(
+        new PutObjectCommand({
+          Bucket: S3_BUCKET,
+          Key: objectKey,
+          Body: encrypted,
+          ContentType: "application/octet-stream",
+          ServerSideEncryption: "AES256"
+        })
+      );
 
       blocks.push({
         key: objectKey,
@@ -113,13 +167,15 @@ app.post("/api/upload", upload.single("file"), async (req, res) => {
       blocks
     };
 
-    await s3.send(new PutObjectCommand({
-      Bucket: S3_BUCKET,
-      Key: `files/${fileId}/manifest.json`,
-      Body: JSON.stringify(manifest),
-      ContentType: "application/json",
-      ServerSideEncryption: "AES256"
-    }));
+    await s3.send(
+      new PutObjectCommand({
+        Bucket: S3_BUCKET,
+        Key: `files/${fileId}/manifest.json`,
+        Body: JSON.stringify(manifest),
+        ContentType: "application/json",
+        ServerSideEncryption: "AES256"
+      })
+    );
 
     res.json({
       message: "File split, encrypted, and stored in Amazon S3!",
@@ -137,22 +193,32 @@ app.post("/api/upload", upload.single("file"), async (req, res) => {
   }
 });
 
+// Retrieve, decrypt, and reconstruct the original file
 app.get("/api/download/:id", async (req, res) => {
   try {
     const fileId = req.params.id;
 
     if (!/^[0-9a-f-]{36}$/i.test(fileId)) {
-      return res.status(400).json({ error: "Invalid file ID." });
+      return res.status(400).json({
+        error: "Invalid file ID."
+      });
     }
 
     let manifest;
 
     try {
-      const data = await readS3Object(`files/${fileId}/manifest.json`);
+      const data = await readS3Object(
+        `files/${fileId}/manifest.json`
+      );
       manifest = JSON.parse(data.toString("utf8"));
     } catch (error) {
-      if (error.name === "NoSuchKey" || error.name === "NotFound") {
-        return res.status(404).json({ error: "File not found in S3." });
+      if (
+        error.name === "NoSuchKey" ||
+        error.name === "NotFound"
+      ) {
+        return res.status(404).json({
+          error: "File not found in S3."
+        });
       }
       throw error;
     }
@@ -162,7 +228,9 @@ app.get("/api/download/:id", async (req, res) => {
       !Array.isArray(manifest.blocks) ||
       manifest.blocks.length !== manifest.totalBlocks
     ) {
-      return res.status(500).json({ error: "Stored file manifest is invalid." });
+      return res.status(500).json({
+        error: "Stored file manifest is invalid."
+      });
     }
 
     const fileKey = deriveFileKey(fileId);
@@ -170,31 +238,42 @@ app.get("/api/download/:id", async (req, res) => {
 
     for (const block of manifest.blocks) {
       const encrypted = await readS3Object(block.key);
+
       const decipher = crypto.createDecipheriv(
         "aes-256-gcm",
         fileKey,
         Buffer.from(block.iv, "base64")
       );
 
-      decipher.setAuthTag(Buffer.from(block.authTag, "base64"));
+      decipher.setAuthTag(
+        Buffer.from(block.authTag, "base64")
+      );
 
-      decryptedBlocks.push(Buffer.concat([
-        decipher.update(encrypted),
-        decipher.final()
-      ]));
+      decryptedBlocks.push(
+        Buffer.concat([
+          decipher.update(encrypted),
+          decipher.final()
+        ])
+      );
     }
 
     const original = Buffer.concat(decryptedBlocks);
 
     if (original.length !== manifest.originalSize) {
-      return res.status(500).json({ error: "Restored file size does not match." });
+      return res.status(500).json({
+        error: "Restored file size does not match."
+      });
     }
 
     res.setHeader(
       "Content-Disposition",
       `attachment; filename="${safeFilename(manifest.fileName)}"`
     );
-    res.setHeader("Content-Type", "application/octet-stream");
+    res.setHeader(
+      "Content-Type",
+      "application/octet-stream"
+    );
+
     res.send(original);
   } catch (error) {
     console.error("Download error:", error);
