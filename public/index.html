@@ -24,7 +24,6 @@
       margin: auto;
     }
 
-    /* HEADER */
     header {
       height: 70px;
       display: flex;
@@ -59,7 +58,6 @@
       color: #91aaa4;
     }
 
-    /* HERO */
     .hero {
       padding: 55px 0 35px;
       text-align: center;
@@ -95,7 +93,6 @@
       line-height: 1.6;
     }
 
-    /* MAIN CARDS */
     .main-grid {
       display: grid;
       grid-template-columns: 1.1fr 0.9fr;
@@ -123,7 +120,6 @@
       margin-bottom: 23px;
     }
 
-    /* FILE UPLOAD */
     .file-area {
       border: 1px dashed rgba(158, 230, 203, 0.35);
       border-radius: 13px;
@@ -183,6 +179,12 @@
       border: 1px solid rgba(158, 230, 203, 0.25);
     }
 
+    .encrypted {
+      background: #173d34;
+      color: #b8f5df;
+      border: 1px solid rgba(158, 230, 203, 0.35);
+    }
+
     button:hover {
       transform: translateY(-1px);
       opacity: 0.92;
@@ -194,7 +196,6 @@
       transform: none;
     }
 
-    /* STATUS */
     .status {
       margin-top: 15px;
       padding: 12px;
@@ -204,9 +205,9 @@
       font-size: 12px;
       line-height: 1.5;
       min-height: 42px;
+      overflow-wrap: anywhere;
     }
 
-    /* SECURITY CARD */
     .security-list {
       display: grid;
       gap: 12px;
@@ -247,7 +248,6 @@
       line-height: 1.4;
     }
 
-    /* WORKFLOW */
     .workflow {
       padding: 55px 0 35px;
     }
@@ -300,7 +300,6 @@
       line-height: 1.5;
     }
 
-    /* FOOTER */
     footer {
       border-top: 1px solid rgba(143, 226, 201, 0.1);
       margin-top: 25px;
@@ -310,7 +309,6 @@
       font-size: 11px;
     }
 
-    /* LAPTOP / SMALL SCREEN */
     @media (max-height: 800px) and (min-width: 850px) {
       .hero {
         padding: 35px 0 25px;
@@ -385,457 +383,336 @@
 </head>
 
 <body>
-
   <div class="container">
 
-    <!-- HEADER -->
     <header>
       <div class="logo">
         <div class="logo-box">C</div>
         CloudVault
       </div>
-
-      <div class="nav-text">
-        Secure Cloud File Storage
-      </div>
+      <div class="nav-text">Secure Cloud File Storage</div>
     </header>
 
-    <!-- HERO -->
     <section class="hero">
       <div class="badge">AWS • Encrypted Storage • Secure Download</div>
-
-      <h1>
-        Secure your files.<br>
-        <span>Keep control.</span>
-      </h1>
-
+      <h1>Secure your files.<br><span>Keep control.</span></h1>
       <p>
         CloudVault protects files by splitting them into blocks,
         encrypting each block, and securely storing them in Amazon S3.
       </p>
     </section>
 
-    <!-- MAIN -->
     <section class="main-grid">
 
-      <!-- UPLOAD CARD -->
       <div class="card">
-
         <h2>Secure a File</h2>
-
         <p class="card-subtitle">
           Select a file to split, encrypt and securely store it in the cloud.
         </p>
 
         <div class="file-area">
           <div class="file-icon">↑</div>
-
-          <input
-            type="file"
-            id="fileInput"
-          />
+          <input type="file" id="fileInput" />
         </div>
 
         <div class="button-row">
-
-          <button
-            class="primary"
-            id="uploadBtn"
-          >
-            Split & Encrypt
+          <button class="primary" id="uploadBtn">
+            Split &amp; Encrypt
           </button>
 
-          <button
-            class="secondary"
-            id="downloadBtn"
-            disabled
-          >
-            Download & Restore
+          <button class="secondary" id="downloadBtn" disabled>
+            Download &amp; Restore
           </button>
 
+          <button class="encrypted" id="encryptedDownloadBtn" disabled>
+            Download Encrypted Copy
+          </button>
         </div>
 
-        <div
-          class="status"
-          id="status"
-        >
+        <div class="status" id="status">
           Select a file to begin.
         </div>
-
       </div>
 
-
-      <!-- SECURITY CARD -->
       <div class="card">
-
         <h2>Protection Layer</h2>
-
         <p class="card-subtitle">
           Multiple security steps protect your file throughout the process.
         </p>
 
         <div class="security-list">
-
           <div class="security-item">
             <div class="check">✓</div>
-
             <div>
               <strong>File Segmentation</strong>
-              <span>
-                Large files are divided into smaller blocks.
-              </span>
+              <span>Large files are divided into smaller blocks.</span>
             </div>
           </div>
 
-
           <div class="security-item">
             <div class="check">✓</div>
-
             <div>
               <strong>AES-256-GCM Encryption</strong>
-              <span>
-                Every block is encrypted before cloud storage.
-              </span>
+              <span>Every block is encrypted before cloud storage.</span>
             </div>
           </div>
 
-
           <div class="security-item">
             <div class="check">✓</div>
-
             <div>
               <strong>Private Amazon S3</strong>
-              <span>
-                Encrypted blocks remain inside a private S3 bucket.
-              </span>
+              <span>Encrypted blocks remain inside a private S3 bucket.</span>
             </div>
           </div>
-
 
           <div class="security-item">
             <div class="check">✓</div>
-
             <div>
               <strong>Secure Reconstruction</strong>
-              <span>
-                Blocks are decrypted and reconstructed during download.
-              </span>
+              <span>Blocks are decrypted and reconstructed during download.</span>
             </div>
           </div>
-
         </div>
-
       </div>
-
     </section>
 
-
-    <!-- WORKFLOW -->
     <section class="workflow">
-
       <div class="section-heading">
-
         <h2>How CloudVault Works</h2>
-
-        <p>
-          From your device to secure cloud storage and back.
-        </p>
-
+        <p>From your device to secure cloud storage and back.</p>
       </div>
 
-
       <div class="workflow-grid">
-
         <div class="step">
           <div class="step-number">01</div>
-
           <h3>Select File</h3>
-
-          <p>
-            Choose a file from your device that you want to protect.
-          </p>
+          <p>Choose a file from your device that you want to protect.</p>
         </div>
-
 
         <div class="step">
           <div class="step-number">02</div>
-
-          <h3>Split & Encrypt</h3>
-
-          <p>
-            The file is divided into blocks and each block is encrypted.
-          </p>
+          <h3>Split &amp; Encrypt</h3>
+          <p>The file is divided into blocks and each block is encrypted.</p>
         </div>
-
 
         <div class="step">
           <div class="step-number">03</div>
-
           <h3>Store in AWS</h3>
-
-          <p>
-            Encrypted blocks and their manifest are stored in private Amazon S3.
-          </p>
+          <p>Encrypted blocks and their manifest are stored in private Amazon S3.</p>
         </div>
-
 
         <div class="step">
           <div class="step-number">04</div>
-
-          <h3>Download & Restore</h3>
-
-          <p>
-            Blocks are retrieved, decrypted and reconstructed into the original file.
-          </p>
+          <h3>Download &amp; Restore</h3>
+          <p>Blocks are retrieved, decrypted and reconstructed into the original file.</p>
         </div>
-
       </div>
-
     </section>
 
-
-    <!-- FOOTER -->
     <footer>
       CloudVault • Secure Cloud File Storage • AWS S3
     </footer>
-
   </div>
 
-
-  <!-- JAVASCRIPT -->
   <script>
-
-    /*
-      IMPORTANT:
-      This is your deployed backend.
-      The frontend uses this URL instead of /api/upload
-      because the frontend and backend are deployed separately.
-    */
     const API_URL = "https://cloudvault-api-8d24.onrender.com";
 
-
-    const fileInput =
-      document.getElementById("fileInput");
-
-    const uploadBtn =
-      document.getElementById("uploadBtn");
-
-    const downloadBtn =
-      document.getElementById("downloadBtn");
-
-    const statusBox =
-      document.getElementById("status");
-
+    const fileInput = document.getElementById("fileInput");
+    const uploadBtn = document.getElementById("uploadBtn");
+    const downloadBtn = document.getElementById("downloadBtn");
+    const encryptedDownloadBtn =
+      document.getElementById("encryptedDownloadBtn");
+    const statusBox = document.getElementById("status");
 
     let currentFileId = null;
 
-
-    // -----------------------------
     // UPLOAD
-    // -----------------------------
-
     uploadBtn.addEventListener("click", async () => {
-
       const file = fileInput.files[0];
 
       if (!file) {
-        statusBox.textContent =
-          "Please select a file first.";
-
+        statusBox.textContent = "Please select a file first.";
         return;
       }
 
-
       uploadBtn.disabled = true;
-
       downloadBtn.disabled = true;
+      encryptedDownloadBtn.disabled = true;
 
       statusBox.textContent =
         "Uploading, splitting and encrypting your file...";
 
-
       try {
-
         const formData = new FormData();
-
         formData.append("file", file);
 
-
-        const response = await fetch(
-          API_URL + "/api/upload",
-          {
-            method: "POST",
-            body: formData
-          }
-        );
-
+        const response = await fetch(API_URL + "/api/upload", {
+          method: "POST",
+          body: formData
+        });
 
         const data = await response.json();
 
-
         if (!response.ok) {
-          throw new Error(
-            data.error || "Upload failed."
-          );
+          throw new Error(data.error || "Upload failed.");
         }
 
+        currentFileId = data.fileId || data.id;
 
-        currentFileId =
-          data.fileId || data.id;
-
+        if (!currentFileId) {
+          throw new Error("Upload succeeded but no file ID was returned.");
+        }
 
         statusBox.textContent =
-          "✓ File secured successfully. File ID: " +
-          currentFileId;
-
+          "✓ File secured successfully. File ID: " + currentFileId;
 
         downloadBtn.disabled = false;
-
-      }
-
-      catch (error) {
-
+        encryptedDownloadBtn.disabled = false;
+      } catch (error) {
         console.error(error);
-
-        statusBox.textContent =
-          "Upload failed: " +
-          error.message;
-
-      }
-
-      finally {
-
+        statusBox.textContent = "Upload failed: " + error.message;
+      } finally {
         uploadBtn.disabled = false;
-
       }
-
     });
 
-
-    // -----------------------------
-    // DOWNLOAD
-    // -----------------------------
-
+    // DOWNLOAD & RESTORE ORIGINAL FILE
     downloadBtn.addEventListener("click", async () => {
-
       if (!currentFileId) {
-
-        statusBox.textContent =
-          "No secured file available.";
-
+        statusBox.textContent = "No secured file available.";
         return;
-
       }
 
-
       downloadBtn.disabled = true;
-
+      encryptedDownloadBtn.disabled = true;
       statusBox.textContent =
         "Retrieving, decrypting and restoring your file...";
 
-
       try {
-
         const response = await fetch(
-          API_URL +
-          "/api/download/" +
-          encodeURIComponent(currentFileId)
+          API_URL + "/api/download/" + encodeURIComponent(currentFileId)
         );
 
-
         if (!response.ok) {
-
-          let errorMessage =
-            "Download failed.";
+          let errorMessage = "Download failed.";
 
           try {
-
-            const data =
-              await response.json();
-
-            errorMessage =
-              data.error || errorMessage;
-
+            const data = await response.json();
+            errorMessage = data.error || errorMessage;
           } catch (_) {}
 
           throw new Error(errorMessage);
-
         }
 
-
-        const blob =
-          await response.blob();
-
-
+        const blob = await response.blob();
         const contentDisposition =
-          response.headers.get(
-            "Content-Disposition"
-          );
+          response.headers.get("Content-Disposition");
 
-
-        let filename =
-          "restored-file";
-
-
+        let filename = "restored-file";
         if (contentDisposition) {
-
-          const match =
-            contentDisposition.match(
-              /filename="?([^"]+)"?/i
-            );
-
-          if (match) {
-            filename = match[1];
-          }
-
+          const match = contentDisposition.match(/filename="?([^"]+)"?/i);
+          if (match) filename = match[1];
         }
 
-
-        const url =
-          window.URL.createObjectURL(blob);
-
-
-        const link =
-          document.createElement("a");
-
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement("a");
         link.href = url;
-
         link.download = filename;
-
         document.body.appendChild(link);
-
         link.click();
-
         link.remove();
 
-
-        window.URL.revokeObjectURL(url);
-
+        window.setTimeout(() => window.URL.revokeObjectURL(url), 1000);
 
         statusBox.textContent =
           "✓ File downloaded and restored successfully.";
-
-      }
-
-      catch (error) {
-
+      } catch (error) {
         console.error(error);
-
-        statusBox.textContent =
-          "Download failed: " +
-          error.message;
-
-      }
-
-      finally {
-
+        statusBox.textContent = "Download failed: " + error.message;
+      } finally {
         downloadBtn.disabled = false;
-
+        encryptedDownloadBtn.disabled = false;
       }
-
     });
 
-  </script>
+    // DOWNLOAD ENCRYPTED COPY (.CVAULT)
+    encryptedDownloadBtn.addEventListener("click", async () => {
+      if (!currentFileId) {
+        statusBox.textContent = "Please upload a file first.";
+        return;
+      }
 
+      encryptedDownloadBtn.disabled = true;
+      downloadBtn.disabled = true;
+      statusBox.textContent =
+        "Downloading encrypted blocks without decrypting them...";
+
+      try {
+        const response = await fetch(
+          API_URL + "/api/download-encrypted/" +
+          encodeURIComponent(currentFileId)
+        );
+
+        if (!response.ok) {
+          let errorMessage = "Encrypted download failed.";
+
+          try {
+            const data = await response.json();
+            errorMessage = data.error || errorMessage;
+          } catch (_) {}
+
+          throw new Error(errorMessage);
+        }
+
+        const blob = await response.blob();
+        const contentDisposition =
+          response.headers.get("Content-Disposition");
+
+        let filename = "cloudvault-encrypted.cvault";
+
+        if (contentDisposition) {
+          const match = contentDisposition.match(/filename="?([^"]+)"?/i);
+          if (match) filename = match[1];
+        }
+
+        if (!filename.toLowerCase().endsWith(".cvault")) {
+          filename += ".cvault";
+        }
+
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+
+        window.setTimeout(() => window.URL.revokeObjectURL(url), 1000);
+
+        statusBox.textContent =
+          "✓ Encrypted copy downloaded successfully as " + filename +
+          ". The file contents were not decrypted.";
+      } catch (error) {
+        console.error(error);
+        statusBox.textContent =
+          "Encrypted download failed: " + error.message;
+      } finally {
+        encryptedDownloadBtn.disabled = false;
+        downloadBtn.disabled = false;
+      }
+    });
+
+    // Clear the old file ID if the user chooses a different file.
+    fileInput.addEventListener("change", () => {
+      currentFileId = null;
+      downloadBtn.disabled = true;
+      encryptedDownloadBtn.disabled = true;
+
+      statusBox.textContent = fileInput.files.length
+        ? "Selected: " + fileInput.files[0].name +
+          ". Tap Split & Encrypt to secure it."
+        : "Select a file to begin.";
+    });
+  </script>
 </body>
 </html>
