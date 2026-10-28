@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>CloudVault | Secure Cloud Storage</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CloudVault | Secure Cloud File Storage</title>
 
   <style>
     * {
@@ -13,567 +12,308 @@
       padding: 0;
     }
 
-    :root {
-      --bg: #0b0f0e;
-      --card: #141a18;
-      --card-light: #19211e;
-      --green: #72d6a3;
-      --green-light: #b9f2d0;
-      --text: #f3f6f3;
-      --muted: #aab6b0;
-      --border: rgba(180, 205, 193, 0.18);
-    }
-
     body {
       font-family: Arial, Helvetica, sans-serif;
-      background:
-        radial-gradient(
-          circle at 15% 10%,
-          rgba(114, 214, 163, 0.10),
-          transparent 30%
-        ),
-        var(--bg);
-      color: var(--text);
+      background: #071513;
+      color: #eaf7f3;
       min-height: 100vh;
-      font-size: 16px;
     }
 
-    /* =========================
-       HEADER
-    ========================= */
+    .container {
+      width: min(1180px, 92%);
+      margin: auto;
+    }
 
+    /* HEADER */
     header {
       height: 70px;
-      border-bottom: 1px solid var(--border);
-      background: rgba(11, 15, 14, 0.96);
-    }
-
-    .nav {
-      max-width: 1180px;
-      height: 100%;
-      margin: auto;
-      padding: 0 25px;
-
       display: flex;
       align-items: center;
       justify-content: space-between;
+      border-bottom: 1px solid rgba(143, 226, 201, 0.12);
     }
 
-    .brand {
+    .logo {
       display: flex;
       align-items: center;
       gap: 10px;
+      font-size: 22px;
+      font-weight: 700;
+      color: #b8f5df;
     }
 
-    .brand-icon {
-      width: 36px;
-      height: 36px;
-
-      border-radius: 10px;
-      border: 1px solid rgba(114, 214, 163, 0.35);
-
+    .logo-box {
+      width: 34px;
+      height: 34px;
+      border-radius: 9px;
+      background: #9ee6cb;
+      color: #071513;
       display: flex;
       align-items: center;
       justify-content: center;
-
-      color: var(--green);
-      font-size: 20px;
-      background: rgba(114, 214, 163, 0.08);
+      font-weight: bold;
     }
 
-    .brand-name {
-      font-size: 21px;
-      font-weight: 700;
+    .nav-text {
+      font-size: 13px;
+      color: #91aaa4;
     }
 
-    .brand-name span {
-      color: var(--green);
-    }
-
-    .nav-badge {
-      color: var(--green);
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 1px;
-
-      padding: 8px 13px;
-      border-radius: 20px;
-
-      border: 1px solid rgba(114, 214, 163, 0.25);
-      background: rgba(114, 214, 163, 0.05);
-    }
-
-    /* =========================
-       MAIN
-    ========================= */
-
-    main {
-      max-width: 1180px;
-      margin: auto;
-      padding: 38px 25px 25px;
-    }
-
-    /* =========================
-       HERO
-    ========================= */
-
+    /* HERO */
     .hero {
+      padding: 55px 0 35px;
       text-align: center;
-      max-width: 850px;
-      margin: auto;
     }
 
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-
-      color: var(--green);
-      background: rgba(114, 214, 163, 0.06);
-      border: 1px solid rgba(114, 214, 163, 0.18);
-
+    .badge {
+      display: inline-block;
       padding: 7px 13px;
+      border: 1px solid rgba(158, 230, 203, 0.25);
       border-radius: 30px;
-
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.8px;
-
-      margin-bottom: 15px;
-    }
-
-    .dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--green);
+      color: #9ee6cb;
+      background: rgba(158, 230, 203, 0.06);
+      font-size: 12px;
+      margin-bottom: 18px;
     }
 
     .hero h1 {
-      font-size: 48px;
+      font-size: clamp(34px, 5vw, 58px);
       line-height: 1.05;
-      letter-spacing: -1.8px;
-      margin-bottom: 13px;
+      margin-bottom: 16px;
+      letter-spacing: -1.5px;
     }
 
     .hero h1 span {
-      color: var(--green);
+      color: #9ee6cb;
     }
 
     .hero p {
-      max-width: 700px;
+      max-width: 650px;
       margin: auto;
-
-      color: var(--muted);
-      font-size: 15px;
-      line-height: 1.55;
+      color: #9cafaa;
+      font-size: 16px;
+      line-height: 1.6;
     }
 
-    /* =========================
-       MAIN WORKSPACE
-    ========================= */
-
-    .workspace {
-      margin-top: 30px;
-
+    /* MAIN CARDS */
+    .main-grid {
       display: grid;
-      grid-template-columns: 1.25fr 0.75fr;
-
-      gap: 18px;
-
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 22px;
       align-items: stretch;
     }
 
-    .panel {
-      background: var(--card);
-      border: 1px solid var(--border);
+    .card {
+      background: #0c201c;
+      border: 1px solid rgba(158, 230, 203, 0.13);
       border-radius: 18px;
-
-      padding: 23px;
-
-      box-shadow:
-        0 18px 45px rgba(0, 0, 0, 0.22);
+      padding: 28px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.18);
     }
 
-    .panel-title {
+    .card h2 {
       font-size: 20px;
-      font-weight: 700;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
 
-    .panel-subtitle {
-      color: var(--muted);
+    .card-subtitle {
+      color: #8fa59f;
       font-size: 13px;
-      line-height: 1.45;
-
-      margin-bottom: 17px;
+      line-height: 1.5;
+      margin-bottom: 23px;
     }
 
-    /* =========================
-       FILE DROP AREA
-    ========================= */
-
-    .dropzone {
-      min-height: 170px;
-
-      border: 1.5px dashed rgba(114, 214, 163, 0.35);
-      border-radius: 14px;
-
-      background: rgba(114, 214, 163, 0.035);
-
-      padding: 20px;
-
-      display: flex;
-      flex-direction: column;
-
-      align-items: center;
-      justify-content: center;
-
-      text-align: center;
-    }
-
-    .upload-icon {
-      width: 48px;
-      height: 48px;
-
+    /* FILE UPLOAD */
+    .file-area {
+      border: 1px dashed rgba(158, 230, 203, 0.35);
       border-radius: 13px;
-
-      background: rgba(114, 214, 163, 0.09);
-      border: 1px solid rgba(114, 214, 163, 0.18);
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      color: var(--green);
-      font-size: 23px;
-
-      margin-bottom: 10px;
+      padding: 23px;
+      text-align: center;
+      background: rgba(158, 230, 203, 0.025);
+      margin-bottom: 15px;
     }
 
-    .dropzone h3 {
-      font-size: 18px;
-      margin-bottom: 5px;
-    }
-
-    .dropzone p {
-      color: var(--muted);
-      font-size: 13px;
-      margin-bottom: 10px;
+    .file-icon {
+      font-size: 28px;
+      margin-bottom: 8px;
     }
 
     input[type="file"] {
-      max-width: 400px;
       width: 100%;
-
-      color: var(--muted);
-      font-size: 13px;
+      color: #9cafaa;
+      font-size: 12px;
     }
 
     input[type="file"]::file-selector-button {
-      background: #202a26;
-      color: var(--text);
-
-      border: 1px solid var(--border);
+      background: #9ee6cb;
+      color: #071513;
+      border: none;
       border-radius: 7px;
-
-      padding: 8px 13px;
-      margin-right: 8px;
-
+      padding: 9px 13px;
+      margin-right: 10px;
+      font-weight: 700;
       cursor: pointer;
-      font-size: 13px;
     }
 
-    /* =========================
-       BUTTONS
-    ========================= */
-
-    .actions {
+    .button-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
-
-      gap: 10px;
-
-      margin-top: 14px;
+      gap: 11px;
+      margin-top: 13px;
     }
 
     button {
       border: none;
       border-radius: 9px;
-
       padding: 12px 15px;
-
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 700;
-
       cursor: pointer;
-
-      transition: 0.2s;
+      transition: 0.2s ease;
     }
 
-    #uploadBtn {
-      background: var(--green);
-      color: #07100b;
+    .primary {
+      background: #9ee6cb;
+      color: #071513;
     }
 
-    #uploadBtn:hover {
-      background: var(--green-light);
+    .secondary {
+      background: transparent;
+      color: #b8f5df;
+      border: 1px solid rgba(158, 230, 203, 0.25);
     }
 
-    #downloadBtn {
-      background: #202a26;
-      color: var(--text);
-
-      border: 1px solid var(--border);
-    }
-
-    #downloadBtn:hover:not(:disabled) {
-      background: #2a3731;
+    button:hover {
+      transform: translateY(-1px);
+      opacity: 0.92;
     }
 
     button:disabled {
-      opacity: 0.42;
+      opacity: 0.45;
       cursor: not-allowed;
+      transform: none;
     }
 
-    /* =========================
-       STATUS
-    ========================= */
-
-    #status {
-      margin-top: 12px;
-
-      min-height: 58px;
-
-      padding: 12px 15px;
-
-      background: #0d1311;
-      border: 1px solid var(--border);
-
-      border-radius: 10px;
-
-      color: #c6d0ca;
-
-      font-size: 13px;
-      line-height: 1.55;
-
-      white-space: pre-wrap;
-      overflow-wrap: anywhere;
+    /* STATUS */
+    .status {
+      margin-top: 15px;
+      padding: 12px;
+      border-radius: 9px;
+      background: #081a17;
+      color: #9cafaa;
+      font-size: 12px;
+      line-height: 1.5;
+      min-height: 42px;
     }
 
-    /* =========================
-       SECURITY PANEL
-    ========================= */
-
-    .security-card {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .security-visual {
-      height: 105px;
-
-      border-radius: 14px;
-
-      background:
-        radial-gradient(
-          circle,
-          rgba(114, 214, 163, 0.14),
-          transparent 60%
-        ),
-        #101614;
-
-      border: 1px solid var(--border);
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      margin-bottom: 13px;
-    }
-
-    .vault-ring {
-      width: 65px;
-      height: 65px;
-
-      border-radius: 50%;
-
-      border: 1px solid rgba(114, 214, 163, 0.45);
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .lock {
-      font-size: 23px;
-      color: var(--green);
-    }
-
+    /* SECURITY CARD */
     .security-list {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
+      display: grid;
+      gap: 12px;
     }
 
     .security-item {
       display: flex;
-      align-items: center;
-
-      gap: 10px;
-
-      padding: 10px 12px;
-
-      border-radius: 9px;
-
-      background: rgba(255, 255, 255, 0.025);
-      border: 1px solid var(--border);
+      gap: 12px;
+      align-items: flex-start;
+      padding: 13px;
+      border-radius: 11px;
+      background: rgba(158, 230, 203, 0.035);
+      border: 1px solid rgba(158, 230, 203, 0.08);
     }
 
     .check {
       width: 25px;
       height: 25px;
-
-      flex-shrink: 0;
-
+      min-width: 25px;
       border-radius: 7px;
-
-      background: rgba(114, 214, 163, 0.10);
-
-      color: var(--green);
-
+      background: rgba(158, 230, 203, 0.13);
+      color: #9ee6cb;
       display: flex;
       align-items: center;
       justify-content: center;
-
-      font-size: 12px;
       font-weight: bold;
     }
 
     .security-item strong {
       display: block;
-
       font-size: 13px;
-
-      margin-bottom: 2px;
+      margin-bottom: 3px;
     }
 
     .security-item span {
-      color: var(--muted);
-
+      color: #839b95;
       font-size: 11px;
-
-      line-height: 1.35;
+      line-height: 1.4;
     }
 
-    /* =========================
-       HOW CLOUDVAULT WORKS
-    ========================= */
-
-    .process {
-      margin-top: 34px;
+    /* WORKFLOW */
+    .workflow {
+      padding: 55px 0 35px;
     }
 
     .section-heading {
       text-align: center;
-
-      margin-bottom: 18px;
+      margin-bottom: 25px;
     }
 
     .section-heading h2 {
-      font-size: 27px;
-      margin-bottom: 5px;
+      font-size: 28px;
+      margin-bottom: 8px;
     }
 
     .section-heading p {
-      color: var(--muted);
+      color: #899f99;
       font-size: 13px;
     }
 
-    .steps {
+    .workflow-grid {
       display: grid;
-
-      grid-template-columns:
-        repeat(4, minmax(0, 1fr));
-
-      gap: 13px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
     }
 
     .step {
-      min-height: 135px;
-
-      padding: 18px;
-
-      background: var(--card);
-
-      border: 1px solid var(--border);
-
+      background: #0c201c;
+      border: 1px solid rgba(158, 230, 203, 0.1);
       border-radius: 14px;
-
-      display: flex;
-      flex-direction: column;
-
-      justify-content: flex-start;
+      padding: 20px;
+      min-height: 155px;
+      position: relative;
     }
 
     .step-number {
-      color: var(--green);
-
-      font-size: 11px;
-      font-weight: 700;
-
-      letter-spacing: 0.8px;
-
-      margin-bottom: 10px;
+      color: #9ee6cb;
+      font-size: 12px;
+      font-weight: bold;
+      margin-bottom: 13px;
     }
 
     .step h3 {
-      font-size: 16px;
-
+      font-size: 15px;
       margin-bottom: 7px;
     }
 
     .step p {
-      color: var(--muted);
-
-      font-size: 12px;
-
+      color: #839b95;
+      font-size: 11px;
       line-height: 1.5;
     }
 
-    /* =========================
-       FOOTER
-    ========================= */
-
+    /* FOOTER */
     footer {
-      max-width: 1180px;
-
-      margin: 30px auto 0;
-
-      padding: 17px 25px;
-
-      border-top: 1px solid var(--border);
-
-      color: #77847d;
-
+      border-top: 1px solid rgba(143, 226, 201, 0.1);
+      margin-top: 25px;
+      padding: 20px 0 25px;
+      text-align: center;
+      color: #657d77;
       font-size: 11px;
-
-      display: flex;
-      justify-content: space-between;
     }
 
-    footer strong {
-      color: #aeb9b3;
-    }
-
-    /* =========================
-       LAPTOP SCREEN
-    ========================= */
-
-    @media (min-width: 1000px) and (max-height: 800px) {
-
-      main {
-        padding-top: 28px;
+    /* LAPTOP / SMALL SCREEN */
+    @media (max-height: 800px) and (min-width: 850px) {
+      .hero {
+        padding: 35px 0 25px;
       }
 
       .hero h1 {
@@ -584,105 +324,61 @@
         font-size: 14px;
       }
 
-      .workspace {
-        margin-top: 24px;
+      .card {
+        padding: 22px;
       }
 
-      .panel {
-        padding: 20px;
-      }
-
-      .dropzone {
-        min-height: 145px;
-      }
-
-      .security-visual {
-        height: 88px;
-      }
-
-      .process {
-        margin-top: 28px;
+      .workflow {
+        padding: 35px 0 25px;
       }
 
       .step {
-        min-height: 120px;
+        min-height: 135px;
+        padding: 17px;
       }
 
-      footer {
-        margin-top: 22px;
+      .step p {
+        font-size: 10.5px;
       }
     }
 
-    /* =========================
-       TABLET
-    ========================= */
-
     @media (max-width: 850px) {
-
-      .workspace {
+      .main-grid {
         grid-template-columns: 1fr;
       }
 
-      .steps {
+      .workflow-grid {
         grid-template-columns: repeat(2, 1fr);
       }
     }
 
-    /* =========================
-       MOBILE
-    ========================= */
-
-    @media (max-width: 600px) {
-
+    @media (max-width: 560px) {
       header {
-        height: 62px;
+        height: 60px;
       }
 
-      .nav {
-        padding: 0 16px;
-      }
-
-      .nav-badge {
+      .nav-text {
         display: none;
       }
 
-      main {
-        padding: 30px 15px;
+      .hero {
+        padding: 40px 0 30px;
       }
 
       .hero h1 {
         font-size: 36px;
-        letter-spacing: -1px;
       }
 
-      .hero p {
-        font-size: 14px;
+      .card {
+        padding: 20px;
       }
 
-      .workspace {
-        margin-top: 25px;
-      }
-
-      .panel {
-        padding: 18px;
-      }
-
-      .actions {
+      .button-row {
         grid-template-columns: 1fr;
       }
 
-      .steps {
+      .workflow-grid {
         grid-template-columns: 1fr;
-      }
-
-      .step {
-        min-height: auto;
-      }
-
-      footer {
-        flex-direction: column;
-        gap: 8px;
-        padding: 17px 15px;
       }
     }
   </style>
@@ -690,45 +386,23 @@
 
 <body>
 
-  <!-- HEADER -->
+  <div class="container">
 
-  <header>
-
-    <div class="nav">
-
-      <div class="brand">
-
-        <div class="brand-icon">
-          ◆
-        </div>
-
-        <div class="brand-name">
-          Cloud<span>Vault</span>
-        </div>
-
+    <!-- HEADER -->
+    <header>
+      <div class="logo">
+        <div class="logo-box">C</div>
+        CloudVault
       </div>
 
-      <div class="nav-badge">
-        SECURE CLOUD STORAGE
+      <div class="nav-text">
+        Secure Cloud File Storage
       </div>
-
-    </div>
-
-  </header>
-
-
-  <!-- MAIN -->
-
-  <main>
+    </header>
 
     <!-- HERO -->
-
     <section class="hero">
-
-      <div class="eyebrow">
-        <span class="dot"></span>
-        CLOUD SECURITY PLATFORM
-      </div>
+      <div class="badge">AWS • Encrypted Storage • Secure Download</div>
 
       <h1>
         Secure your files.<br>
@@ -736,70 +410,54 @@
       </h1>
 
       <p>
-        CloudVault splits your file into blocks, encrypts each block,
-        stores the protected data in Amazon S3, and reconstructs
-        the original file when you download it.
+        CloudVault protects files by splitting them into blocks,
+        encrypting each block, and securely storing them in Amazon S3.
       </p>
-
     </section>
 
+    <!-- MAIN -->
+    <section class="main-grid">
 
-    <!-- MAIN TWO PANELS -->
+      <!-- UPLOAD CARD -->
+      <div class="card">
 
-    <section class="workspace">
+        <h2>Secure a File</h2>
 
-      <!-- LEFT -->
+        <p class="card-subtitle">
+          Select a file to split, encrypt and securely store it in the cloud.
+        </p>
 
-      <div class="panel">
-
-        <div class="panel-title">
-          Secure a file
-        </div>
-
-        <div class="panel-subtitle">
-          Select a file to split, encrypt and securely store in the cloud.
-        </div>
-
-
-        <div class="dropzone">
-
-          <div class="upload-icon">
-            ↑
-          </div>
-
-          <h3>
-            Choose your file
-          </h3>
-
-          <p>
-            Maximum file size: 20 MB
-          </p>
+        <div class="file-area">
+          <div class="file-icon">↑</div>
 
           <input
             type="file"
             id="fileInput"
+          />
+        </div>
+
+        <div class="button-row">
+
+          <button
+            class="primary"
+            id="uploadBtn"
           >
-
-        </div>
-
-
-        <div class="actions">
-
-          <button id="uploadBtn">
-            Split &amp; Encrypt
+            Split & Encrypt
           </button>
 
-          <button id="downloadBtn" disabled>
-            Download &amp; Restore
+          <button
+            class="secondary"
+            id="downloadBtn"
+            disabled
+          >
+            Download & Restore
           </button>
 
         </div>
-
 
         <div
+          class="status"
           id="status"
-          role="status"
-          aria-live="polite"
         >
           Select a file to begin.
         </div>
@@ -807,94 +465,62 @@
       </div>
 
 
-      <!-- RIGHT -->
+      <!-- SECURITY CARD -->
+      <div class="card">
 
-      <div class="panel security-card">
+        <h2>Protection Layer</h2>
 
-        <div class="panel-title">
-          Protection layer
-        </div>
-
-        <div class="panel-subtitle">
-          Your file passes through multiple protection stages.
-        </div>
-
-
-        <div class="security-visual">
-
-          <div class="vault-ring">
-
-            <div class="lock">
-              ◆
-            </div>
-
-          </div>
-
-        </div>
-
+        <p class="card-subtitle">
+          Multiple security steps protect your file throughout the process.
+        </p>
 
         <div class="security-list">
 
           <div class="security-item">
-
-            <div class="check">
-              ✓
-            </div>
+            <div class="check">✓</div>
 
             <div>
-
-              <strong>
-                File segmentation
-              </strong>
-
+              <strong>File Segmentation</strong>
               <span>
-                Data is divided into smaller blocks.
+                Large files are divided into smaller blocks.
               </span>
-
             </div>
-
           </div>
 
 
           <div class="security-item">
-
-            <div class="check">
-              ✓
-            </div>
+            <div class="check">✓</div>
 
             <div>
-
-              <strong>
-                Encrypted blocks
-              </strong>
-
+              <strong>AES-256-GCM Encryption</strong>
               <span>
-                Each block is protected before storage.
+                Every block is encrypted before cloud storage.
               </span>
-
             </div>
-
           </div>
 
 
           <div class="security-item">
-
-            <div class="check">
-              ✓
-            </div>
+            <div class="check">✓</div>
 
             <div>
-
-              <strong>
-                Cloud storage
-              </strong>
-
+              <strong>Private Amazon S3</strong>
               <span>
-                Protected data is stored in Amazon S3.
+                Encrypted blocks remain inside a private S3 bucket.
               </span>
-
             </div>
+          </div>
 
+
+          <div class="security-item">
+            <div class="check">✓</div>
+
+            <div>
+              <strong>Secure Reconstruction</strong>
+              <span>
+                Blocks are decrypted and reconstructed during download.
+              </span>
+            </div>
           </div>
 
         </div>
@@ -904,126 +530,89 @@
     </section>
 
 
-    <!-- HOW CLOUDVAULT WORKS -->
-
-    <section class="process">
+    <!-- WORKFLOW -->
+    <section class="workflow">
 
       <div class="section-heading">
 
-        <h2>
-          How CloudVault Works
-        </h2>
+        <h2>How CloudVault Works</h2>
 
         <p>
-          Four simple stages protect and restore your file.
+          From your device to secure cloud storage and back.
         </p>
 
       </div>
 
 
-      <div class="steps">
-
-        <!-- STEP 1 -->
+      <div class="workflow-grid">
 
         <div class="step">
+          <div class="step-number">01</div>
 
-          <div class="step-number">
-            01 — INPUT
-          </div>
-
-          <h3>
-            Select File
-          </h3>
+          <h3>Select File</h3>
 
           <p>
-            Choose the file you want to securely store.
+            Choose a file from your device that you want to protect.
           </p>
-
         </div>
 
 
-        <!-- STEP 2 -->
-
         <div class="step">
+          <div class="step-number">02</div>
 
-          <div class="step-number">
-            02 — SPLIT
-          </div>
-
-          <h3>
-            Divide into Blocks
-          </h3>
+          <h3>Split & Encrypt</h3>
 
           <p>
-            The file is divided into smaller data blocks.
+            The file is divided into blocks and each block is encrypted.
           </p>
-
         </div>
 
 
-        <!-- STEP 3 -->
-
         <div class="step">
+          <div class="step-number">03</div>
 
-          <div class="step-number">
-            03 — PROTECT
-          </div>
-
-          <h3>
-            Encrypt &amp; Store
-          </h3>
+          <h3>Store in AWS</h3>
 
           <p>
-            Blocks are encrypted and securely stored in Amazon S3.
+            Encrypted blocks and their manifest are stored in private Amazon S3.
           </p>
-
         </div>
 
 
-        <!-- STEP 4 -->
-
         <div class="step">
+          <div class="step-number">04</div>
 
-          <div class="step-number">
-            04 — RESTORE
-          </div>
-
-          <h3>
-            Download File
-          </h3>
+          <h3>Download & Restore</h3>
 
           <p>
-            Blocks are retrieved, decrypted and reconstructed.
+            Blocks are retrieved, decrypted and reconstructed into the original file.
           </p>
-
         </div>
 
       </div>
 
     </section>
 
-  </main>
 
+    <!-- FOOTER -->
+    <footer>
+      CloudVault • Secure Cloud File Storage • AWS S3
+    </footer>
 
-  <!-- FOOTER -->
-
-  <footer>
-
-    <div>
-      <strong>CloudVault</strong>
-      — Secure Cloud File Storage
-    </div>
-
-    <div>
-      Cloud Computing Mini Project
-    </div>
-
-  </footer>
+  </div>
 
 
   <!-- JAVASCRIPT -->
-
   <script>
+
+    /*
+      IMPORTANT:
+      This is your deployed backend.
+      The frontend uses this URL instead of /api/upload
+      because the frontend and backend are deployed separately.
+    */
+    const API_URL = "https://cloudvault-api-8d24.onrender.com";
+
 
     const fileInput =
       document.getElementById("fileInput");
@@ -1037,19 +626,19 @@
     const statusBox =
       document.getElementById("status");
 
+
     let currentFileId = null;
 
 
-    /* =========================
-       UPLOAD
-    ========================= */
+    // -----------------------------
+    // UPLOAD
+    // -----------------------------
 
     uploadBtn.addEventListener("click", async () => {
 
       const file = fileInput.files[0];
 
       if (!file) {
-
         statusBox.textContent =
           "Please select a file first.";
 
@@ -1057,76 +646,64 @@
       }
 
 
-      const formData =
-        new FormData();
-
-      formData.append("file", file);
-
-
       uploadBtn.disabled = true;
-      downloadBtn.disabled = true;
-      currentFileId = null;
 
+      downloadBtn.disabled = true;
 
       statusBox.textContent =
-        "Uploading, splitting, encrypting, and storing your file...";
+        "Uploading, splitting and encrypting your file...";
 
 
       try {
 
-        const response =
-          await fetch("/api/upload", {
+        const formData = new FormData();
+
+        formData.append("file", file);
+
+
+        const response = await fetch(
+          API_URL + "/api/upload",
+          {
             method: "POST",
             body: formData
-          });
+          }
+        );
 
 
-        const result =
-          await response.json();
+        const data = await response.json();
 
 
         if (!response.ok) {
-
           throw new Error(
-            result.error ||
-            "Processing failed."
+            data.error || "Upload failed."
           );
-
         }
 
 
         currentFileId =
-          result.fileId;
+          data.fileId || data.id;
 
 
         statusBox.textContent =
-          "SUCCESS — File secured.\n\n" +
-          "File: " +
-          result.fileName +
-          "\n" +
-          "Original size: " +
-          result.originalSize +
-          " bytes\n" +
-          "Block size: " +
-          result.blockSize +
-          " bytes\n" +
-          "Total blocks: " +
-          result.totalBlocks +
-          "\n\n" +
-          "Encrypted blocks have been stored in Amazon S3.";
+          "✓ File secured successfully. File ID: " +
+          currentFileId;
 
 
         downloadBtn.disabled = false;
 
+      }
 
-      } catch (error) {
+      catch (error) {
+
+        console.error(error);
 
         statusBox.textContent =
-          "Error: " +
+          "Upload failed: " +
           error.message;
 
+      }
 
-      } finally {
+      finally {
 
         uploadBtn.disabled = false;
 
@@ -1135,40 +712,53 @@
     });
 
 
-    /* =========================
-       DOWNLOAD & RESTORE
-    ========================= */
+    // -----------------------------
+    // DOWNLOAD
+    // -----------------------------
 
     downloadBtn.addEventListener("click", async () => {
 
-      if (!currentFileId) return;
+      if (!currentFileId) {
+
+        statusBox.textContent =
+          "No secured file available.";
+
+        return;
+
+      }
 
 
       downloadBtn.disabled = true;
 
-
       statusBox.textContent =
-        "Retrieving, decrypting, and restoring your file...";
+        "Retrieving, decrypting and restoring your file...";
 
 
       try {
 
-        const response =
-          await fetch(
-            "/api/download/" +
-            encodeURIComponent(currentFileId)
-          );
+        const response = await fetch(
+          API_URL +
+          "/api/download/" +
+          encodeURIComponent(currentFileId)
+        );
 
 
         if (!response.ok) {
 
-          const result =
-            await response.json();
+          let errorMessage =
+            "Download failed.";
 
-          throw new Error(
-            result.error ||
-            "Download failed."
-          );
+          try {
+
+            const data =
+              await response.json();
+
+            errorMessage =
+              data.error || errorMessage;
+
+          } catch (_) {}
+
+          throw new Error(errorMessage);
 
         }
 
@@ -1177,46 +767,67 @@
           await response.blob();
 
 
+        const contentDisposition =
+          response.headers.get(
+            "Content-Disposition"
+          );
+
+
+        let filename =
+          "restored-file";
+
+
+        if (contentDisposition) {
+
+          const match =
+            contentDisposition.match(
+              /filename="?([^"]+)"?/i
+            );
+
+          if (match) {
+            filename = match[1];
+          }
+
+        }
+
+
         const url =
-          URL.createObjectURL(blob);
+          window.URL.createObjectURL(blob);
 
 
         const link =
           document.createElement("a");
 
-
         link.href = url;
 
-
-        link.download =
-          fileInput.files[0]?.name ||
-          "restored-file";
-
+        link.download = filename;
 
         document.body.appendChild(link);
 
-
         link.click();
-
 
         link.remove();
 
 
-        URL.revokeObjectURL(url);
+        window.URL.revokeObjectURL(url);
 
 
         statusBox.textContent =
-          "SUCCESS — Your file was decrypted and restored successfully.";
+          "✓ File downloaded and restored successfully.";
 
+      }
 
-      } catch (error) {
+      catch (error) {
+
+        console.error(error);
 
         statusBox.textContent =
-          "Error: " +
+          "Download failed: " +
           error.message;
 
+      }
 
-      } finally {
+      finally {
 
         downloadBtn.disabled = false;
 
