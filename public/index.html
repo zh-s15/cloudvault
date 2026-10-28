@@ -3,165 +3,723 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CloudVault | Secure File Storage</title>
+  <meta name="description" content="CloudVault - Secure cloud file storage with encryption and file block technology">
+  <title>CloudVault | Secure Cloud Storage</title>
+
   <style>
-    * { box-sizing: border-box; }
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+
+    :root {
+      --bg: #0b0f0e;
+      --bg-soft: #111715;
+      --card: rgba(22, 29, 27, 0.88);
+      --card-light: #18211f;
+      --green: #72d6a3;
+      --green-dark: #2d9d68;
+      --mint: #b9f2d0;
+      --text: #f2f5f1;
+      --muted: #9ba9a3;
+      --border: rgba(155, 181, 169, 0.16);
+      --danger: #ff9d9d;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
 
     body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f3f6fb;
-      color: #18243b;
+      font-family: "DM Sans", sans-serif;
+      background:
+        radial-gradient(circle at 15% 10%, rgba(67, 157, 105, 0.12), transparent 28%),
+        radial-gradient(circle at 85% 25%, rgba(114, 214, 163, 0.07), transparent 25%),
+        var(--bg);
+      color: var(--text);
+      min-height: 100vh;
     }
+
+    /* ---------- NAVBAR ---------- */
 
     header {
-      background: #13294b;
-      color: white;
-      padding: 22px 8%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
+      width: 100%;
+      border-bottom: 1px solid var(--border);
+      background: rgba(11, 15, 14, 0.82);
+      backdrop-filter: blur(18px);
+      position: sticky;
+      top: 0;
+      z-index: 20;
     }
 
-    header h2 { margin: 0; }
-    header span { color: #7de0c3; }
+    .nav {
+      max-width: 1120px;
+      margin: auto;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+
+    .brand-icon {
+      width: 38px;
+      height: 38px;
+      border: 1px solid rgba(114, 214, 163, 0.4);
+      border-radius: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--green);
+      background: rgba(114, 214, 163, 0.07);
+      font-size: 18px;
+    }
+
+    .brand-name {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.4px;
+    }
+
+    .brand-name span {
+      color: var(--green);
+    }
+
+    .nav-badge {
+      font-size: 12px;
+      color: var(--green);
+      border: 1px solid rgba(114, 214, 163, 0.25);
+      background: rgba(114, 214, 163, 0.06);
+      padding: 7px 12px;
+      border-radius: 100px;
+    }
+
+    /* ---------- HERO ---------- */
 
     main {
-      max-width: 900px;
-      margin: 42px auto;
-      padding: 0 20px;
+      max-width: 1120px;
+      margin: auto;
+      padding: 75px 24px 50px;
     }
 
-    .intro { text-align: center; margin-bottom: 30px; }
-    .intro h1 { font-size: 36px; margin-bottom: 12px; }
-    .intro p { color: #66748b; line-height: 1.7; }
+    .hero {
+      text-align: center;
+      max-width: 780px;
+      margin: auto;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--green);
+      background: rgba(114, 214, 163, 0.07);
+      border: 1px solid rgba(114, 214, 163, 0.18);
+      padding: 8px 14px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      background: var(--green);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--green);
+    }
+
+    .hero h1 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(42px, 7vw, 72px);
+      line-height: 1.02;
+      letter-spacing: -3px;
+      margin-bottom: 22px;
+    }
+
+    .hero h1 span {
+      color: var(--green);
+    }
+
+    .hero p {
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.7;
+      max-width: 650px;
+      margin: auto;
+    }
+
+    /* ---------- MAIN CARD ---------- */
+
+    .workspace {
+      margin-top: 55px;
+      display: grid;
+      grid-template-columns: 1.4fr 0.8fr;
+      gap: 20px;
+    }
 
     .panel {
-      background: white;
-      padding: 30px;
-      border-radius: 16px;
-      box-shadow: 0 8px 30px #172c4810;
-      border: 1px solid #e0e7f0;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.28);
     }
 
+    .panel-title {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 20px;
+      margin-bottom: 7px;
+    }
+
+    .panel-subtitle {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 24px;
+    }
+
+    /* ---------- DROPZONE ---------- */
+
     .dropzone {
-      border: 2px dashed #9aabc3;
-      border-radius: 12px;
-      padding: 30px 18px;
+      border: 1.5px dashed rgba(114, 214, 163, 0.32);
+      background:
+        linear-gradient(
+          145deg,
+          rgba(114, 214, 163, 0.055),
+          rgba(255, 255, 255, 0.01)
+        );
+      border-radius: 18px;
+      min-height: 235px;
+      padding: 35px 20px;
       text-align: center;
-      background: #f9fbff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: 0.25s ease;
+    }
+
+    .dropzone:hover {
+      border-color: rgba(114, 214, 163, 0.65);
+      background: rgba(114, 214, 163, 0.07);
+    }
+
+    .upload-icon {
+      width: 58px;
+      height: 58px;
+      border-radius: 17px;
+      background: rgba(114, 214, 163, 0.1);
+      border: 1px solid rgba(114, 214, 163, 0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--green);
+      font-size: 25px;
+      margin-bottom: 18px;
+    }
+
+    .dropzone h3 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 18px;
+      margin-bottom: 7px;
+    }
+
+    .dropzone p {
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 16px;
     }
 
     input[type="file"] {
-      display: block;
-      max-width: 100%;
-      margin: 18px auto;
+      width: 100%;
+      max-width: 350px;
+      color: var(--muted);
+      font-size: 12px;
+      padding: 8px;
+    }
+
+    input[type="file"]::file-selector-button {
+      background: #202b27;
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 9px 13px;
+      margin-right: 9px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    /* ---------- BUTTONS ---------- */
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 18px;
     }
 
     button {
-      background: #167d70;
-      color: white;
+      flex: 1;
       border: 0;
-      border-radius: 8px;
-      padding: 13px 20px;
-      font-size: 15px;
+      border-radius: 11px;
+      padding: 13px 17px;
+      font-family: "DM Sans", sans-serif;
+      font-size: 13px;
+      font-weight: 700;
       cursor: pointer;
-      margin: 5px;
+      transition: 0.2s ease;
     }
 
-    button:hover { background: #10675d; }
-    button:disabled { opacity: 0.6; cursor: not-allowed; }
+    #uploadBtn {
+      background: var(--green);
+      color: #08100c;
+    }
 
-    #downloadBtn { background: #234d86; }
-    #downloadBtn:hover { background: #193b69; }
+    #uploadBtn:hover {
+      background: var(--mint);
+      transform: translateY(-1px);
+    }
+
+    #downloadBtn {
+      background: #202b27;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    #downloadBtn:hover:not(:disabled) {
+      background: #293732;
+    }
+
+    button:disabled {
+      opacity: 0.42;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* ---------- STATUS ---------- */
 
     #status {
-      margin-top: 20px;
+      margin-top: 18px;
       padding: 16px;
-      background: #f0f5fa;
-      border-radius: 8px;
+      background: #0d1311;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      color: #b9c5bf;
       white-space: pre-wrap;
       overflow-wrap: anywhere;
       line-height: 1.6;
+      font-size: 12px;
+      min-height: 72px;
+    }
+
+    /* ---------- SECURITY PANEL ---------- */
+
+    .security-card {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .security-visual {
+      min-height: 150px;
+      border-radius: 18px;
+      background:
+        radial-gradient(circle at center, rgba(114, 214, 163, 0.15), transparent 58%),
+        #101715;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .vault-ring {
+      width: 92px;
+      height: 92px;
+      border: 1px solid rgba(114, 214, 163, 0.45);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow:
+        0 0 0 12px rgba(114, 214, 163, 0.035),
+        0 0 0 24px rgba(114, 214, 163, 0.018);
+    }
+
+    .lock {
+      font-size: 29px;
+      color: var(--green);
+    }
+
+    .security-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .security-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid var(--border);
+    }
+
+    .check {
+      width: 25px;
+      height: 25px;
+      border-radius: 8px;
+      background: rgba(114, 214, 163, 0.1);
+      color: var(--green);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+
+    .security-item strong {
+      display: block;
+      font-size: 12px;
+      margin-bottom: 2px;
+    }
+
+    .security-item span {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    /* ---------- PROCESS ---------- */
+
+    .process {
+      margin-top: 55px;
+    }
+
+    .section-heading {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .section-heading h2 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 27px;
+      margin-bottom: 7px;
+    }
+
+    .section-heading p {
+      color: var(--muted);
+      font-size: 13px;
     }
 
     .steps {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 12px;
-      margin-top: 28px;
     }
 
     .step {
-      padding: 18px 10px;
-      background: #e9f4f2;
-      border-radius: 10px;
-      text-align: center;
-      font-size: 14px;
+      padding: 22px;
+      background: rgba(22, 29, 27, 0.72);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      transition: 0.2s ease;
     }
 
-    .step strong {
-      display: block;
-      margin-bottom: 7px;
-      color: #126e62;
+    .step:hover {
+      border-color: rgba(114, 214, 163, 0.3);
+      transform: translateY(-2px);
     }
+
+    .step-number {
+      color: var(--green);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 15px;
+    }
+
+    .step h3 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 15px;
+      margin-bottom: 7px;
+    }
+
+    .step p {
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.6;
+    }
+
+    /* ---------- FOOTER ---------- */
 
     footer {
-      text-align: center;
-      padding: 25px;
-      color: #77849a;
-      font-size: 13px;
+      max-width: 1120px;
+      margin: 55px auto 0;
+      padding: 24px;
+      border-top: 1px solid var(--border);
+      color: #68766f;
+      font-size: 11px;
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
     }
 
-    @media (max-width: 600px) {
-      .intro h1 { font-size: 28px; }
-      .panel { padding: 18px; }
-      .steps { grid-template-columns: repeat(2, 1fr); }
-      header { padding: 18px 5%; }
+    footer strong {
+      color: #9ba9a3;
+    }
+
+    /* ---------- RESPONSIVE ---------- */
+
+    @media (max-width: 800px) {
+      .workspace {
+        grid-template-columns: 1fr;
+      }
+
+      .steps {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 560px) {
+      .nav {
+        padding: 16px;
+      }
+
+      .nav-badge {
+        display: none;
+      }
+
+      main {
+        padding: 55px 16px 35px;
+      }
+
+      .hero h1 {
+        letter-spacing: -2px;
+      }
+
+      .hero p {
+        font-size: 15px;
+      }
+
+      .panel {
+        padding: 18px;
+        border-radius: 19px;
+      }
+
+      .actions {
+        flex-direction: column;
+      }
+
+      .steps {
+        grid-template-columns: 1fr;
+      }
+
+      footer {
+        flex-direction: column;
+      }
     }
   </style>
 </head>
+
 <body>
+
   <header>
-    <h2>Cloud<span>Vault</span></h2>
-    <div>Secure File Storage</div>
+    <div class="nav">
+      <div class="brand">
+        <div class="brand-icon">⌁</div>
+        <div class="brand-name">Cloud<span>Vault</span></div>
+      </div>
+
+      <div class="nav-badge">SECURE CLOUD STORAGE</div>
+    </div>
   </header>
 
   <main>
-    <section class="intro">
-      <h1>Your Files, Protected.</h1>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="eyebrow">
+        <span class="dot"></span>
+        Cloud Security Platform
+      </div>
+
+      <h1>
+        Secure your files.<br>
+        <span>Keep control.</span>
+      </h1>
+
       <p>
-        Split files into blocks, encrypt them, and restore the original
-        file when you download it.
+        CloudVault splits your file into blocks, encrypts each block,
+        stores the protected data in cloud storage, and reconstructs
+        the original file when you need it.
       </p>
     </section>
 
-    <section class="panel">
-      <div class="dropzone">
-        <h3>Select a file to secure</h3>
-        <p>For this demonstration, files are limited to 20 MB.</p>
 
-        <input type="file" id="fileInput" />
+    <!-- WORKSPACE -->
+    <section class="workspace">
 
-        <button id="uploadBtn">Split & Encrypt File</button>
-        <button id="downloadBtn" disabled>Download & Restore</button>
+      <!-- UPLOAD PANEL -->
+      <div class="panel">
+
+        <div class="panel-title">Secure a file</div>
+
+        <div class="panel-subtitle">
+          Select a file to split and encrypt before cloud storage.
+        </div>
+
+        <div class="dropzone">
+
+          <div class="upload-icon">↑</div>
+
+          <h3>Choose your file</h3>
+
+          <p>
+            Maximum file size: 20 MB
+          </p>
+
+          <input type="file" id="fileInput">
+
+        </div>
+
+        <div class="actions">
+          <button id="uploadBtn">
+            Split &amp; Encrypt
+          </button>
+
+          <button id="downloadBtn" disabled>
+            Download &amp; Restore
+          </button>
+        </div>
+
+        <div id="status" role="status" aria-live="polite">
+          Select a file to begin.
+        </div>
+
       </div>
 
-      <div id="status" role="status" aria-live="polite">
-        Select a file to begin.
+
+      <!-- SECURITY PANEL -->
+      <div class="panel security-card">
+
+        <div class="panel-title">Protection layer</div>
+
+        <div class="panel-subtitle">
+          Multiple stages protect your data.
+        </div>
+
+        <div class="security-visual">
+          <div class="vault-ring">
+            <div class="lock">◆</div>
+          </div>
+        </div>
+
+        <div class="security-list">
+
+          <div class="security-item">
+            <div class="check">✓</div>
+            <div>
+              <strong>File segmentation</strong>
+              <span>Data is divided into smaller blocks</span>
+            </div>
+          </div>
+
+          <div class="security-item">
+            <div class="check">✓</div>
+            <div>
+              <strong>Encrypted blocks</strong>
+              <span>Each block is protected before storage</span>
+            </div>
+          </div>
+
+          <div class="security-item">
+            <div class="check">✓</div>
+            <div>
+              <strong>Cloud storage</strong>
+              <span>Protected data is stored in Amazon S3</span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- PROCESS -->
+    <section class="process">
+
+      <div class="section-heading">
+        <h2>How CloudVault works</h2>
+        <p>A simple four-stage cloud security workflow.</p>
       </div>
 
       <div class="steps">
-        <div class="step"><strong>01</strong>Select File</div>
-        <div class="step"><strong>02</strong>Split into Blocks</div>
-        <div class="step"><strong>03</strong>Encrypt Blocks</div>
-        <div class="step"><strong>04</strong>Restore File</div>
+
+        <div class="step">
+          <div class="step-number">01 — INPUT</div>
+          <h3>Select File</h3>
+          <p>
+            Choose the file you want to securely store.
+          </p>
+        </div>
+
+        <div class="step">
+          <div class="step-number">02 — SPLIT</div>
+          <h3>Divide into Blocks</h3>
+          <p>
+            The file is divided into smaller data blocks.
+          </p>
+        </div>
+
+        <div class="step">
+          <div class="step-number">03 — PROTECT</div>
+          <h3>Encrypt &amp; Store</h3>
+          <p>
+            Blocks are encrypted and stored securely in S3.
+          </p>
+        </div>
+
+        <div class="step">
+          <div class="step-number">04 — RESTORE</div>
+          <h3>Download File</h3>
+          <p>
+            Blocks are retrieved, decrypted, and reconstructed.
+          </p>
+        </div>
+
       </div>
+
     </section>
+
   </main>
 
-  <footer>CloudVault — Cloud Computing Mini Project</footer>
+
+  <footer>
+    <div>
+      <strong>CloudVault</strong> — Secure Cloud File Storage
+    </div>
+
+    <div>
+      Cloud Computing Mini Project
+    </div>
+  </footer>
+
 
   <script>
     const fileInput = document.getElementById("fileInput");
@@ -172,6 +730,7 @@
     let currentFileId = null;
 
     uploadBtn.addEventListener("click", async () => {
+
       const file = fileInput.files[0];
 
       if (!file) {
@@ -185,9 +744,12 @@
       uploadBtn.disabled = true;
       downloadBtn.disabled = true;
       currentFileId = null;
-      statusBox.textContent = "Uploading, splitting, and encrypting your file...";
+
+      statusBox.textContent =
+        "Uploading, splitting, encrypting, and storing your file...";
 
       try {
+
         const response = await fetch("/api/upload", {
           method: "POST",
           body: formData
@@ -200,56 +762,93 @@
         }
 
         currentFileId = result.fileId;
+
         statusBox.textContent =
-          "SUCCESS: File split and encrypted!\n\n" +
+          "SUCCESS — File secured.\n\n" +
           "File: " + result.fileName + "\n" +
           "Original size: " + result.originalSize + " bytes\n" +
           "Block size: " + result.blockSize + " bytes\n" +
           "Total blocks: " + result.totalBlocks + "\n\n" +
-          "The encrypted blocks are currently held in server memory.";
+          "Encrypted blocks have been stored in Amazon S3.";
+
         downloadBtn.disabled = false;
+
       } catch (error) {
-        statusBox.textContent = "Error: " + error.message;
+
+        statusBox.textContent =
+          "Error: " + error.message;
+
       } finally {
+
         uploadBtn.disabled = false;
+
       }
+
     });
 
+
     downloadBtn.addEventListener("click", async () => {
+
       if (!currentFileId) return;
 
       downloadBtn.disabled = true;
-      statusBox.textContent = "Decrypting and restoring your file...";
+
+      statusBox.textContent =
+        "Retrieving, decrypting, and restoring your file...";
 
       try {
+
         const response = await fetch(
-          "/api/download/" + encodeURIComponent(currentFileId)
+          "/api/download/" +
+          encodeURIComponent(currentFileId)
         );
 
         if (!response.ok) {
+
           const result = await response.json();
-          throw new Error(result.error || "Download failed.");
+
+          throw new Error(
+            result.error || "Download failed."
+          );
+
         }
 
         const blob = await response.blob();
+
         const url = URL.createObjectURL(blob);
+
         const link = document.createElement("a");
 
         link.href = url;
-        link.download = fileInput.files[0]?.name || "restored-file";
+
+        link.download =
+          fileInput.files[0]?.name ||
+          "restored-file";
+
         document.body.appendChild(link);
+
         link.click();
+
         link.remove();
+
         URL.revokeObjectURL(url);
 
         statusBox.textContent =
-          "SUCCESS: Your file was decrypted and restored for download.";
+          "SUCCESS — Your file was decrypted and restored successfully.";
+
       } catch (error) {
-        statusBox.textContent = "Error: " + error.message;
+
+        statusBox.textContent =
+          "Error: " + error.message;
+
       } finally {
+
         downloadBtn.disabled = false;
+
       }
+
     });
   </script>
+
 </body>
 </html>
