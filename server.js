@@ -66,7 +66,6 @@ if (!/^[0-9a-fA-F]{64}$/.test(ENCRYPTION_MASTER_KEY)) {
 }
 
 const masterKey = Buffer.from(ENCRYPTION_MASTER_KEY, "hex");
-
 const s3 = new S3Client({ region: AWS_REGION });
 
 // Serve frontend files if present
@@ -193,6 +192,118 @@ app.post("/api/upload", upload.single("file"), async (req, res) => {
   }
 });
 
+// Download encrypted blocks without decrypting them.
+// Package format: CVAULT1 header, manifest length + JSON,
+// followed by each encrypted block's length and bytes.
+app.get("/api/download-encrypted/:id", async (req, res) => {
+  try {
+    const fileId = req.params.id;
+
+    if (!/^[0-9a-f-]{36}$/i.test(fileId)) {
+      return res.status(400).json({
+        error: "Invalid file ID."
+      });
+    }
+
+    let manifest;
+
+    try {
+      const data = await readS3Object(
+        `files/${fileId}/manifest.json`
+      );
+      manifest = JSON.parse(data.toString("utf8"));
+    } catch (error) {
+      if (
+        error.name === "NoSuchKey" ||
+        error.name === "NotFound"
+      ) {
+        return res.status(404).json({
+          error: "File not found in S3."
+        });
+      }
+      throw error;
+    }
+
+    if (
+      manifest.fileId !== fileId ||
+      !Array.isArray(manifest.blocks) ||
+      !Number.isInteger(manifest.totalBlocks) ||
+      manifest.totalBlocks < 1 ||
+      manifest.totalBlocks > Math.ceil(MAX_FILE_SIZE / BLOCK_SIZE) ||
+      manifest.blocks.length !== manifest.totalBlocks
+    ) {
+      return res.status(500).json({
+        error: "Stored file manifest is invalid."
+      });
+    }
+
+    const manifestBuffer = Buffer.from(
+      JSON.stringify(manifest),
+      "utf8"
+    );
+
+    const manifestLength = Buffer.alloc(4);
+    manifestLength.writeUInt32BE(manifestBuffer.length);
+
+    const parts = [
+      Buffer.from("CVAULT1\n", "ascii"),
+      manifestLength,
+      manifestBuffer
+    ];
+
+    // Fetch each encrypted block as stored in S3.
+    // This route never decrypts the block contents.
+    for (let index = 0; index < manifest.blocks.length; index++) {
+      const block = manifest.blocks[index];
+
+      const expectedKey =
+        `files/${fileId}/block-${String(index).padStart(6, "0")}.bin`;
+
+      if (
+        !block ||
+        block.key !== expectedKey ||
+        typeof block.iv !== "string" ||
+        typeof block.authTag !== "string"
+      ) {
+        return res.status(500).json({
+          error: "Stored block metadata is invalid."
+        });
+      }
+
+      const encryptedBlock = await readS3Object(expectedKey);
+
+      const blockLength = Buffer.alloc(4);
+      blockLength.writeUInt32BE(encryptedBlock.length);
+
+      parts.push(blockLength, encryptedBlock);
+    }
+
+    const encryptedPackage = Buffer.concat(parts);
+    const downloadName =
+      `${safeFilename(manifest.fileName) || "cloudvault-file"}.cvault`;
+
+    res.setHeader(
+      "Content-Type",
+      "application/octet-stream"
+    );
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename="${downloadName}"`
+    );
+    res.setHeader(
+      "Content-Length",
+      encryptedPackage.length
+    );
+
+    return res.send(encryptedPackage);
+  } catch (error) {
+    console.error("Encrypted download error:", error);
+    return res.status(500).json({
+      error: "Encrypted download failed. Check the server configuration."
+    });
+  }
+});
+
 // Retrieve, decrypt, and reconstruct the original file
 app.get("/api/download/:id", async (req, res) => {
   try {
@@ -274,7 +385,7 @@ app.get("/api/download/:id", async (req, res) => {
       "application/octet-stream"
     );
 
-    res.send(original);
+    return res.send(original);
   } catch (error) {
     console.error("Download error:", error);
     res.status(500).json({
